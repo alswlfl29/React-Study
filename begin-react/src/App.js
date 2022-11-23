@@ -1,4 +1,4 @@
-import React, { useRef, useState, useMemo } from "react";
+import React, { useRef, useState, useMemo, useCallback } from "react";
 import UserList from "./UserList";
 import CreateUser from "./CreateUser";
 
@@ -13,13 +13,16 @@ function App() {
     email: "",
   });
   const { username, email } = inputs;
-  const onChange = (e) => {
-    const { name, value } = e.target;
-    setInputs({
-      ...inputs,
-      [name]: value,
-    });
-  };
+  const onChange = useCallback(
+    (e) => {
+      const { name, value } = e.target;
+      setInputs({
+        ...inputs,
+        [name]: value,
+      });
+    },
+    [inputs]
+  );
   const [users, setUsers] = useState([
     {
       id: 1,
@@ -42,7 +45,7 @@ function App() {
   ]);
 
   const nextId = useRef(4); //useRef() 사용할 때 파라미터 넣어주면, 이 값이 .current값의 기본값이 됨
-  const onCreate = () => {
+  const onCreate = useCallback(() => {
     const user = {
       id: nextId.current,
       username,
@@ -54,21 +57,27 @@ function App() {
       email: "",
     });
     nextId.current += 1; //값 수정 시, .current 값 수정하면 되고, 조회할 때도 .current조회하면 됨
-  };
+  }, [users, username, email]);
 
-  const onRemove = (id) => {
-    //user.id가 파라미터로 일치하지 않는 원소만 추출하여 새로운 배열을 만듦
-    //=user.id가 id인 것을 제거
-    setUsers(users.filter((user) => user.id !== id));
-  };
+  const onRemove = useCallback(
+    (id) => {
+      //user.id가 파라미터로 일치하지 않는 원소만 추출하여 새로운 배열을 만듦
+      //=user.id가 id인 것을 제거
+      setUsers(users.filter((user) => user.id !== id));
+    },
+    [users]
+  );
 
-  const onToggle = (id) => {
-    setUsers(
-      users.map((user) =>
-        user.id === id ? { ...user, active: !user.active } : user
-      )
-    );
-  };
+  const onToggle = useCallback(
+    (id) => {
+      setUsers(
+        users.map((user) =>
+          user.id === id ? { ...user, active: !user.active } : user
+        )
+      );
+    },
+    [users]
+  );
   const count = useMemo(() => countActiveUsers(users), [users]);
   return (
     <>
