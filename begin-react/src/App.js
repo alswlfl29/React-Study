@@ -13,16 +13,13 @@ function App() {
     email: "",
   });
   const { username, email } = inputs;
-  const onChange = useCallback(
-    (e) => {
-      const { name, value } = e.target;
-      setInputs({
-        ...inputs,
-        [name]: value,
-      });
-    },
-    [inputs]
-  );
+  const onChange = useCallback((e) => {
+    const { name, value } = e.target;
+    setInputs({
+      ...inputs,
+      [name]: value,
+    });
+  }, []);
   const [users, setUsers] = useState([
     {
       id: 1,
@@ -57,7 +54,7 @@ function App() {
       email: "",
     });
     nextId.current += 1; //값 수정 시, .current 값 수정하면 되고, 조회할 때도 .current조회하면 됨
-  }, [users, username, email]);
+  }, [username, email]);
 
   const onRemove = useCallback(
     (id) => {
@@ -68,16 +65,13 @@ function App() {
     [users]
   );
 
-  const onToggle = useCallback(
-    (id) => {
-      setUsers(
-        users.map((user) =>
-          user.id === id ? { ...user, active: !user.active } : user
-        )
-      );
-    },
-    [users]
-  );
+  const onToggle = useCallback((id) => {
+    setUsers(
+      users.map((user) =>
+        user.id === id ? { ...user, active: !user.active } : user
+      )
+    );
+  }, []);
   const count = useMemo(() => countActiveUsers(users), [users]);
   return (
     <>
