@@ -17,7 +17,7 @@ const TodoHeadBlock = styled.div`
       color: #ebf0e8;
     }
     .day {
-      color: #2d346c;
+      color: #FF9614;
       font-size: 28px;
       margin-top; 0;
     }

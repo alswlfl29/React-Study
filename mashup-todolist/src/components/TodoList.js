@@ -7,7 +7,6 @@ const TodoListBlock = styled.div`
   padding: 25px 50px;
   padding-bottom: 20px;
   overflow-y: auto;
-  background: gray;
 `;
 
 function TodoList() {
